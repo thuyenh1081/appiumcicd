@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="Suite" parallel="tests">
+    <test name="IOS">
+        <listeners>
+            <listener class-name="com.qa.listeners.TestListener" />
+        </listeners>
+        <parameter name="emulator" value="true" />
+        <parameter name="platformName" value ="iOS"/>
+        <parameter name="udid" value="01c312e1dfc2ab0d92bb0669d444244239a7a551" />
+        <parameter name="deviceName" value ="iPhone 11"/>
+        <parameter name="wdaLocalPort" value="10001" />
+        <parameter name="webkitDebugProxyPort" value="11001" />
+        <classes>
+            <class name="com.qa.tests.LoginTests">
+                <methods>
+                    <include name = "invalidUserName"/>
+                </methods>
+            </class>
+            <!--            <class name="com.qa.tests.ProductTest"/>-->
+        </classes>
+    </test>
+</suite> <!-- Suite -->

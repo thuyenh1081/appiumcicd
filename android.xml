@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="Suite" parallel="tests">
+    <test name="Android">
+        <listeners>
+            <listener class-name="com.qa.listeners.TestListener" />
+        </listeners>
+        <parameter name="emulator" value="true" />
+        <parameter name="platformName" value ="Android"/>
+        <parameter name="udid" value="replace_with_device_udid" />
+        <parameter name="deviceName" value ="Pixel_4"/>
+        <parameter name="systemPort" value="10000" />
+        <parameter name="chromeDriverPort" value="11000" />
+<!--        <parameter name="platformVersion" value =""/>-->
+        <classes>
+            <class name="com.qa.tests.LoginTests">
+            <methods>
+                <include name = "invalidUserName"/>
+            </methods>
+            </class>
+<!--            <class name="com.qa.tests.ProductTest"/>-->
+        </classes>
+    </test>
+</suite> <!-- Suite -->

@@ -1,0 +1,195 @@
+====================================================
+Install Maven and Configure Maven Surefire Plugin
+====================================================
+-> Download Maven and unzip to local dir
+
+On Mac:
+-------
+-> add maven bin path to .bash_profile or .zprofile
+
+On Windows:
+-----------
+-> add maven bin path to system environment variable
+
+Common:
+--------
+-> Configure the Maven Surefile Plugin
+-> Create seperate TestNG XMLs for Android and iOS
+-> Execute from terminal/command prompt
+-> Delete the app builds
+
+
+
+2. Create Git repo for automation and commit the project
+========================================================
+Pre-requisite: Git account
+git init
+git add .
+git commit -m "initial commit"
+git remote add origin <remote repository URL>
+git remote -v
+git push -f origin master
+
+
+
+3. Fork and Clone the Sauce Labs demo app repo
+==============================================
+Sauce Labs demo app Git: https://github.com/saucelabs/sample-app-mobile
+
+	
+
+4. Android: Windows: Build the APK
+===================================
+https://github.com/saucelabs/sample-app-mobile/blob/master/docs/BUILDING.md
+
+-> Install and Configure Gradle
+-> npm install -g react-native-cli
+-> Navigate to the root project dir and execute npm install
+-> npm install --save react-native-gesture-handler react-native-reanimated react-native-screens @react-native-community/toolbar-android
+-> Open ./android/build.gradle and update minSdkVersion to 21
+-> react-native run-android
+-> react-native bundle --dev false --platform android --entry-file index.js --bundle-output ./android/app/src/main/assets/index.android.bundle --assets-dest ./android/app/src/main/res
+-> Navigate to ./android and execute gradle assembleDebug
+
+
+
+5. Android: Mac: Build the APK
+===============================
+https://github.com/saucelabs/sample-app-mobile/blob/master/docs/BUILDING.md
+
+-> npm install -g react-native-cli
+-> Navigate to the root project dir and execute npm install
+-> npm install --save react-native-gesture-handler react-native-reanimated react-native-screens @react-native-community/toolbar-android
+-> Open ./android/build.gradle and update minSdkVersion to 21
+-> react-native run-android
+-> If not able to find android SDK path, then create local.properties file under ./android folder and add the sdk path as below.
+sdk.dir = /Users/<USERNAME>/Library/Android/sdk
+
+
+
+6. iOS: Build the .APP for the Simulator
+========================================
+https://github.com/saucelabs/sample-app-mobile/blob/master/docs/BUILDING.md
+
+-> brew install yarn
+-> brew install watchman
+-> npm install -g react-native-cli
+-> sudo gem install cocoapods
+-> Navigate to ./iOS dir and execute pod install
+-> If you observe any error, open ./iOS/podfile and then update the build version to 10.0 or higher
+-> Navigate back to root project folder and execute yarn install
+-> If you observe any error, delete ./ios/yarn.lock file and then try yarn install again
+-> react-native run-ios
+
+
+
+7. Windows: Install and Configure Jenkins
+=========================================
+-> Download site: https://www.jenkins.io/download/
+-> Open CMD prompt and type "java -jar jenkins.jar"
+-> Launch http://localhost:8080
+-> Unlock Jenkins:
+Admin password: C:\Program Files (x86)\Jenkins\secrets\initialAdminPassword
+-> Create first admin user and login
+
+
+
+8. Mac: Install and Configure Jenkins
+=====================================
+-> brew install jenkins-lts
+-> brew services start jenkins-lts
+-> launch http://localhost:8080
+-> Unlock Jenkins: 
+Admin password: /Users/Om/.jenkins/secrets/initialAdminPassword
+-> Create first admin user and login
+
+
+
+9. Jenkins: Create Android build job
+====================================== 
+
+On Windows:
+-----------
+-> npm install
+-> npm install --save react-native-gesture-handler react-native-reanimated react-native-screens @react-native-community/toolbar-android
+-> react-native bundle --dev false --platform android --entry-file index.js --bundle-output ./android/app/src/main/assets/index.android.bundle --assets-dest ./android/app/src/main/res
+-> assembleDebug
+
+On Mac:
+-------
+#!/bin/bash -l
+-> npm install
+-> npm install --save react-native-gesture-handler react-native-reanimated react-native-screens @react-native-community/toolbar-android
+-> react-native run-android
+
+
+
+10. Jenkins: Create Android test job
+====================================
+
+On Windows:
+-----------
+xcopy %JENKINS_HOME%\workspace\Build_Android\android\app\build\outputs\apk\debug\app-debug.apk %WORKSPACE%\src\test\resources\app\Android.SauceLabs.Mobile.Sample.app.2.2.1.apk /Y
+
+test
+surefire.suiteXmlFiles=android.xml
+
+On Mac:
+-------
+#!/bin/bash -l
+cp -r ${JENKINS_HOME}\workspace\Build_Android\android\app\build\outputs\apk\debug\app-debug.apk ${WORKSPACE}\src\test\resources\app\Android.SauceLabs.Mobile.Sample.app.2.2.1.apk
+mvn test -Dsurefire.suiteXmlFiles=android.xml
+
+
+
+11. Jenkins: Create iOS build job
+================================
+#!/bin/bash -l
+npm install
+npm install --save react-native-gesture-handler react-native-reanimated react-native-screens
+cd ios
+pod install
+cd -
+react-native run-ios
+
+-> Update automation to use new build path
+-> Update bundle id
+
+/Users/Om/Library/Developer/Xcode/DerivedData/SwagLabsMobileApp-dgjxcqksmekthogkddrtdsdmbusb/Build/Products/Debug-iphonesimulator/SwagLabsMobileApp.app
+
+
+
+12. Jenkins: Create iOS test job
+================================
+#!/bin/bash -l
+
+rm -R ${WORKSPACE}/src/test/resources/app/SwagLabsMobileApp.app
+
+cp -rf /Users/Om/Library/Developer/Xcode/DerivedData/SwagLabsMobileApp-dgjxcqksmekthogkddrtdsdmbusb/Build/Products/Debug-iphonesimulator/SwagLabsMobileApp.app ${WORKSPACE}/src/test/resources/app/SwagLabsMobileApp.app
+
+mvn clean test -Dsurefire.suiteXmlFiles=ios.xml
+
+
+
+13. Jenkins: Auto trigger jobs using SCM Polling
+================================================
+Steps same for Windows, Mac, iOS jobs and Android Jobs
+
+
+
+14. Jenkins: Auto trigger jobs using Git Webhooks (Recommended)
+===============================================================
+Steps same for Windows, Mac, iOS jobs and Android Jobs
+
+-> Install Git integration plugin
+-> Use ngrok to expose localhost over internet using randomized url
+
+
+
+15. Jenkins: Auto trigger jobs using Build Frequency (Recommended)
+=================================================================
+
+
+
+
+
