@@ -270,8 +270,14 @@ Task        kill /pid {ma pid lay dc o lent tren} /f
                     caps.setCapability(MobileCapabilityType.AUTOMATION_NAME, pros.getProperty("iOSAutomationName"));
                     caps.setCapability("wdaLocalPort", wdaLocalPort);
                     caps.setCapability("appium:webkitDebugProxyPort", webkitDebugProxyPort);
-                caps.setCapability("bundleId",pros.getProperty("iOSBundleId"));
-//                    url = new URL(pros.getProperty("appiumURL") + "4724");
+//                caps.setCapability("bundleId",pros.getProperty("iOSBundleId"));
+////                    url = new URL(pros.getProperty("appiumURL") + "4724");
+
+                   String iOSAppUrl = System.getProperty("user.dir") + File.separator + "src" + File.separator + "test"
+                + File.separator + "resources" + File.separator + "app" + File.separator+ "SwagLabsMobileApp.app";
+                    caps.setCapability("app", iOSAppUrl);
+                    url = new URL(pros.getProperty("appiumURL") + "4723");
+
                     utils.log().info("this is log fir IOS");
                     driver = new IOSDriver(url, caps);
                     break;
